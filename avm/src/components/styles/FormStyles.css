@@ -1,0 +1,195 @@
+
+.input-form-login {
+    width: 300px;
+    height: 45px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0);
+    font-size: medium;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+}
+
+.input-form-table {
+    width: 95%;
+    height: 45px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.47);
+    border-radius: 10px;
+    background: rgb(255, 255, 255);
+    color: #000000;
+    font-size: medium;
+    padding: 10px;
+}
+.input-search {
+    width: 300px;
+    height: 45px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.47);
+    border-radius: 10px;
+    background: rgb(255, 255, 255);
+    color: #000000;
+    font-size: medium;
+    padding: 10px;
+}
+.input-phone-ext {
+    width: 80px;
+    margin-bottom: 10px;
+    height: 45px;
+    border: 1px solid rgba(0, 0, 0, 0.47);
+    border-radius: 10px;
+    background: rgb(255, 255, 255);
+    color: #000000;
+    font-size: medium;
+    padding: 10px;
+}
+
+.input-block {
+    width: 165px;
+    margin-bottom: 20px;
+    height: 45px;
+    border: 1px solid rgba(0, 0, 0, 0.47);
+    border-radius: 10px;
+    background: rgb(255, 255, 255);
+    color: #000000;
+    font-size: medium;
+    padding: 10px;
+}
+
+.input-plot-of-land {
+    width: 165px;
+    margin-bottom: 10px;
+    height: 45px;
+    border: 1px solid rgba(0, 0, 0, 0.47);
+    border-radius: 10px;
+    background: rgb(255, 255, 255);
+    color: #000000;
+    font-size: medium;
+    padding: 10px;
+}
+
+.input-phone {
+    width: 250px;
+    height: 45px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.47);
+    border-radius: 10px;
+    background: rgb(255, 255, 255);
+    color: #000000;
+    font-size: medium;
+    padding: 10px;
+    margin-left: -57px;
+}
+
+.btn-login {
+    width: 170px;
+    height: 55px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0);
+    color: #FFFFFF;
+    font-size: medium;
+    padding: 5px;
+}
+.btn-table {
+    width: 190px;
+    height: 55px;
+    font-weight: bold;
+    border: 1px solid rgba(3, 25, 164, 0.86);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0);
+    color: rgba(3, 25, 164, 0.86);
+    font-size: medium;
+}
+
+.btn-table-disabled {
+    width: 190px;
+    height: 55px;
+    font-weight: bold;
+    border: 1px solid rgba(182, 182, 182, 0.86);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0);
+    color: rgba(182, 182, 182, 0.86);
+    font-size: medium;
+}
+
+
+.btn-type-user {
+    width: 60px;
+    height: 60px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0);
+    color: #FFFFFF;
+    font-size: medium;
+    padding: 5px;
+}
+
+.btn-icon {
+    width: 40px;
+    margin-left: 3px;
+    height: 40px;
+    border: 1px solid rgba(44, 44, 44, 0.25);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0);
+    padding: 3px;
+}
+
+.btn-logout {
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0);
+    color: #FFFFFF;
+}
+.btn{
+    color: #f1f1f1;
+}
+.btn-nav {
+    width: 40px;
+    height: 40px;
+    margin: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 10px;
+    background: rgb(255, 255, 255);
+}
+
+.hr {
+    background: rgba(255, 255, 255, 0);
+}
+
+.error-messages {
+    font-size: small;
+    color: tomato;
+}
+
+.error-messages-table {
+    font-size: small;
+    color: tomato;
+    margin-top: -4px;
+    margin-bottom: 3px;
+}
+.error-messages-table-type-of-asset {
+    font-size: small;
+    color: tomato;
+    margin-top: 4px;
+    margin-bottom: -7px;
+}
+.error-messages-table-block {
+    font-size: small;
+    color: tomato;
+    margin-top: -14px;
+    margin-bottom: 10px;
+}
+.error-messages-table-phone {
+    font-size: small;
+    color: tomato;
+    margin-left: -50px;
+    margin-top: -5px;
+    margin-bottom: 5px;
+}
