@@ -1,3 +1,3 @@
 <div>
-    Price: {{ $appreciation->address }}
+   <p> MAIL EXAMPLE </p>
 </div>

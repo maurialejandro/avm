@@ -4,6 +4,8 @@ namespace App\Services;
 use App\Mail\OrderShipped;
 use App\Models\Appreciation;
 use Illuminate\Support\Facades\Mail;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AppreciationExport;
 
 class AppreciationService
 {
@@ -51,7 +53,15 @@ class AppreciationService
             $appreciation->value_uf_report = 123546123;
             $appreciation->quality = 10;
             $appreciation->save();
-
+            $appreciationGet = [
+                'direccion' => $appreciation->address,
+                'area_terreno' => $appreciation->terrain_area,
+                'area_construction' => $appreciation->construction_area,
+                'habitaciones' => $appreciation->bedrooms,
+                'banos' => $appreciation->bathrooms,
+                'valor_uf' => $appreciation->value_uf_saved
+            ];
+            $excel = Excel::store(new AppreciationExport($appreciation), 'appreciation.xlsx');
             Mail::to('mauricio.acuna@valuaciones.cl')->send(new OrderShipped($appreciation));
             return [
                 'success' => true,

@@ -8,49 +8,33 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\SerializesModels;
-use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\AppreciationExport;
+use Symfony\Component\Mime\MimeTypes;
 
 class OrderShipped extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $appreciation;
     /**
      * Create a new message instance.
      */
-    public function __construct( public Appreciation $appreciation )
+    public function __construct($appreciation)
     {
+        $this->appreciation = $appreciation;
     }
 
-    /**
-     * Get the message envelope.
-     */
-    public function envelope(): Envelope
+    public function build(): self 
     {
-        return new Envelope(
-            subject: 'Valoracion Valuaciones SPA',
-        );
-    }
-
-    /**
-     * Get the message content definition.
-     */
-    public function content(): Content
-    {
-        $excel = Excel::store(new OrderShipped($this->appreciation), 'appreciation.xlsx');
-
-        return new Content(
-            view: 'mail.valoration',
-        );
-    }
-
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
-    public function attachments(): array
-    {
-        return [];
+        return $this
+            ->subject('Informe AVM para revisar en excel')
+            ->view('mail.valoration')
+            ->attach(public_path('storage/appreciation.xlsx'), [
+                'as' => 'appreciation.xlsx',
+                'mime' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ]);
     }
 }
