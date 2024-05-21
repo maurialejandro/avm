@@ -27,7 +27,6 @@ export default function NavBar(){
     const navigation = useNavigate();
     const user = useAuthContext();
     const logout = useUserLogout();
-    console.log(user);
     const navigate = useNavigate();
 
     // add in a separate type array of proyect

@@ -21,33 +21,26 @@ export function CreateAppreciationForm() {
     const [ rutError, setRutError ] = React.useState('');
     const [ typeAssetError, setTypeAssetError ] = React.useState('');
     const [ addressError, setAddressError ] = React.useState('');
-    const [ typeAssets, setTypeAssets ] = React.useState([]);
+    const [ typeAssets, setTypeAssets ] = React.useState(null);
     const options = [
-        { value: 'casa', label: 'Casa' },
-        { value: 'departamento', label: 'Departamento' },
-    ]
+        { value: 1, label: 'Casa' },
+        { value: 2, label: 'Departamento' },
+    ];
+
     useEffect(() => {
         (async () => {
             if(communeSearch){
                 await getCommuneBack(communeSearch);
             }
         })()
-    }, [communeSearch])
-
+    }, [communeSearch, ])
     const getCommuneBack = async (search) => {
         const res = await searchCommune(search.trim());
         if(res.success === true){
-            console.log(res.data.name);
             setValue('commune', res.data?.name);
             setValue('region', res.data.region.name);
             setValue('communeId', res.data.id);
         }
-    }
-
-    const getTypeAsset = async () => {
-        const res = await getTypeAsset();
-        setTypeAssets(res.typeAssets);
-        console.log(res);
     }
 
     const { register, handleSubmit, formState: { errors }, setValue, getValues, clearErrors } = useForm({
@@ -59,6 +52,8 @@ export function CreateAppreciationForm() {
             region: "",
             commune: "",
             communeId: "",
+            latitude: "",
+            longitude: "",
             typeOfAsset: "",
             addressMap: "",
             rolBlock: "",
@@ -66,15 +61,21 @@ export function CreateAppreciationForm() {
             terrainArea: "",
             terrainConstruction: "",
             bedroom: "",
-            bathroom: ""
+            bathroom: "",
+            newClient: false,
         }
     })
     const onSubmit = async (data) => {
-        console.log(data);
         const res = await storeAppreciation(data);
-        console.log(res);
         if(res.success === true){
-            
+            enqueueSnackbar(res.message, {
+                variant: "success",
+            });
+        }
+        if(res.success === false){
+            enqueueSnackbar('Error al crear Valoracion', {
+                variant: "error"
+            });
         }
     }
     const handleEnterKey = async () => {
@@ -108,14 +109,20 @@ export function CreateAppreciationForm() {
             enqueueSnackbar('No se encontro ningun cliente', {
                 variant: "warning"
             });
+            setValue('newClient', true);
             setIsLoading(false);
+            setIsDataRutSet(false);
             return;
         }
-        setIsLoading(false);
-        setValue('name', res.client[0].name, { shouldTouch: true });
-        setValue('email', res.client[0].email, { shouldTouch: true });
-        setValue('phone', res.client[0].phone, { shouldTouch: true });
-        setIsDataRutSet(false);
+        if(res.success === true){
+            setIsLoading(false);
+            setValue('name', res.client[0].name, { shouldTouch: true });
+            setValue('email', res.client[0].email, { shouldTouch: true });
+            setValue('phone', res.client[0].phone, { shouldTouch: true });
+            setValue('newClient', false);
+            setIsDataRutSet(false);
+        }
+
     }
     const checkKeyDown = (e) => {
         if(e.key === "Enter") e.preventDefault();
@@ -269,7 +276,7 @@ export function CreateAppreciationForm() {
                                 placeholder="Tipo de bien"
                                 options={options}
                                 onChange={(e) => {
-                                    setValue('typeOfAsset', e.label);
+                                    setValue('typeOfAsset', e.value);
                                 }}
                             />
                             {typeAssetError && <p className="error-messages-table-type-of-asset" role="alert"> { typeAssetError } </p>}

@@ -30,6 +30,7 @@ export function AutoCompleteInputMap(props) {
               () => {
                 // When the user selects a place, we can replace the keyword without request data from API
                 // by setting the second parameter to "false"
+                // add cases when address is a null
                 setValue(description, false);
                 clearSuggestions();
                 setValues("addressMap", description);
@@ -39,6 +40,8 @@ export function AutoCompleteInputMap(props) {
                 // Get latitude and longitude via utility functions
                 getGeocode({ address: description }).then((results) => {
                     const { lat, lng } = getLatLng(results[0]);
+                    setValues('latitude', lat);
+                    setValues('longitude', lng);
                     setCoordinates({lat, lng});
                 });
               };

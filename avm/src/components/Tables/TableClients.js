@@ -178,7 +178,7 @@ export function TableClients(props) {
                 <Paper style={{backgroundColor: 'transparent', borderRadius: 16, padding: 10}} >
                     <SkeletonTable colSpan={5} limit={5} />
                 </Paper>
-            ) :(
+            ) : (
                 <Paper sx={{ width: '100%' }} style={{ backgroundColor: 'transparent', borderRadius: 16  }} >
                     <TableContainer component={Paper} style={{ borderRadius: 16 }} >
                         <Table sx={{ minWidth: 700 }}  className="glass-table" aria-label="customized table">

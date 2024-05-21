@@ -21,7 +21,7 @@ import {SkeletonTable} from "../Elements/SkeletonTable";
 import {useAuthContext} from "../../context/AuthContext";
 import {getAppreciationByClient} from "../../services/appreciation";
 import {enqueueSnackbar} from "notistack";
-
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export function TableClientAppreciation(){
     const [isLoading, setIsLoading] = React.useState(true);
@@ -38,7 +38,7 @@ export function TableClientAppreciation(){
     const getAppreciationBack = async () => {
         // add validations
         const res = await getAppreciationByClient();
-        console.log(res);
+        console.log(res, 'CLIETN APPRECIATION');
         if(res.code === "ERR_BAD_RESPONSE"){
             console.log("PASO")
             enqueueSnackbar('Error en el servidor... Contactarse con el equipo TI', {
@@ -68,7 +68,7 @@ export function TableClientAppreciation(){
             setIsLoading(false);
         }
         if(res?.appreciations.length > 0){
-            setRows(res);
+            setRows(res.appreciations);
         }
         setIsLoading(false);
     }
@@ -199,7 +199,15 @@ export function TableClientAppreciation(){
                                         <StyledTableCell align="right" style={{ backgroundColor: '#f1f1f1', color: '#2f2f2f', borderColor: '#8d8d8d' }} >{row.value_uf_reference}</StyledTableCell>
                                         <StyledTableCell align="right" style={{ backgroundColor: '#f1f1f1', color: '#2f2f2f', borderColor: '#8d8d8d' }} >{row.pesos}</StyledTableCell>
                                         <StyledTableCell align="right" style={{ backgroundColor: '#f1f1f1', color: '#2f2f2f', borderColor: '#8d8d8d' }} >{row.quantity}</StyledTableCell>
-                                        <StyledTableCell align="right" style={{ backgroundColor: '#f1f1f1', color: '#2f2f2f', borderColor: '#8d8d8d' }} > <DownloadIcon /> </StyledTableCell>
+                                        <StyledTableCell align="right" style={{ backgroundColor: '#f1f1f1', color: '#2f2f2f', borderColor: '#8d8d8d' }} >
+                                        <button
+                                            className="btn-icon"
+                                        >
+                                            <a href={`${apiUrl}/file/${row.file[1].path}`} download>
+                                                <DownloadIcon />
+                                            </a>
+                                        </button>
+                                        </StyledTableCell>
                                     </StyledTableRow>
                                 ))}
                             </TableBody>

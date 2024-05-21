@@ -22,12 +22,16 @@ import {getAppreciation} from "../../services/appreciation";
 import {SkeletonTable} from "../Elements/SkeletonTable";
 import {enqueueSnackbar} from "notistack";
 import {useAuthContext} from "../../context/AuthContext";
+import "../../components/styles/FormStyles.css";
+import UploadDialog from "../Elements/UploadDialog";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 export function TableAppreciation(){
     const [isLoading, setIsLoading] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
+    const [ appreciation, setAppreciation ] = React.useState({})
     const [ rows, setRows ] = React.useState([]);
     const user = useAuthContext();
-
     React.useEffect(() => {
         (async () => {
             setTimeout(() => {
@@ -43,9 +47,7 @@ export function TableAppreciation(){
     }, []);
     const getAppreciationBack = async () => {
         const res = await getAppreciation();
-        console.log(res);
         if(res.code === "ERR_BAD_RESPONSE"){
-            console.log("PASO")
             enqueueSnackbar('Error en el servidor... Contactarse con el equipo TI', {
                 variant: "error",
             });
@@ -72,6 +74,13 @@ export function TableAppreciation(){
             })
             return;
         }
+        if(res.success === false){
+            enqueueSnackbar('Error al buscar Valoraciones', {
+                variant: "error"
+            });
+            setIsLoading(false);
+            return;
+        }
         if(res?.appreciations.length === 0){
             enqueueSnackbar('No se encontraron datos', {
                 variant: "warning"
@@ -79,9 +88,9 @@ export function TableAppreciation(){
             setIsLoading(false);
         }
         if(res?.appreciations.length > 0){
+            setRows(res.appreciations);
             setIsLoading(false);
         }
-
     }
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
@@ -174,6 +183,15 @@ export function TableAppreciation(){
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
+
+    const handleUploadFile = async (data) => {
+        // generate fetch to back with instance for files
+        console.log(data);
+        setAppreciation(data);
+        setOpen(true);
+    }
+
+
     return(
         <>
             {isLoading ? (
@@ -212,8 +230,22 @@ export function TableAppreciation(){
                                         <StyledTableCell align="right" style={{ backgroundColor: '#f1f1f1', color: '#2f2f2f', borderColor: '#8d8d8d' }} >{row.value_uf_valoranet}</StyledTableCell>
                                         <StyledTableCell align="right" style={{ backgroundColor: '#f1f1f1', color: '#2f2f2f', borderColor: '#8d8d8d' }} > 5.5 </StyledTableCell>
                                         <StyledTableCell align="right" style={{ backgroundColor: '#f1f1f1', color: '#2f2f2f', borderColor: '#8d8d8d' }} >
-                                            <UploadIcon fontSize="medium" />
-                                            <DownloadIcon fontSize="medium" />
+                                            <button
+                                                className="btn-icon"
+                                                disabled={ user.user.type === 'administrator_supervisor' ? false : true }
+                                                onClick={() => handleUploadFile(row)}
+
+                                            >
+                                                <UploadIcon color="green" fontSize="medium" />
+                                            </button>
+                                            <button
+                                                className="btn-icon"
+                                                disabled={ user.user.type === 'administrator_supervisor' ? false : true }
+                                            >
+                                                <a href={`${apiUrl}/file/${row.file[0].path}`} download>
+                                                    <DownloadIcon fontSize="medium" />
+                                                </a>
+                                            </button>
                                         </StyledTableCell>
                                     </StyledTableRow>
                                 ))}
@@ -232,6 +264,7 @@ export function TableAppreciation(){
                     />
                 </Paper>
             )}
+            <UploadDialog open={open} setOpen={setOpen} appreciation={appreciation}  />
         </>
 
     )

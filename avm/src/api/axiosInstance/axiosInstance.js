@@ -13,7 +13,7 @@ export const AxiosInstance = axios.create(
     }
 )
 
-export const AxiosInstanceImage = axios.create(
+export const AxiosInstanceFile = axios.create(
     {
         baseURL: apiUrl,
         timeout: 10000,

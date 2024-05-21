@@ -13,7 +13,6 @@ import {useAuthContext} from "../../../context/AuthContext";
 export function Valoration(){
     const navigate = useNavigate();
     const user = useAuthContext();
-    console.log(user);
     return (
         <>
             <NavBar/>
