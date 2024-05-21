@@ -43,6 +43,21 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'files' => [
+            'driver' => 'local',
+            'root' => storage_path('app/files'),
+            'visibility' => 'public',
+            'permissions' => [
+                'file' => [
+                    'public' => 0664,
+                    'private' => 0600,
+                ],
+                'dir' => [
+                    'public' => 0775,
+                    'private' => 0700,
+                ],
+            ],
+        ],
 
         's3' => [
             'driver' => 's3',

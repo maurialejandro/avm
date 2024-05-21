@@ -3,15 +3,25 @@ namespace App\Services;
 
 use App\Mail\OrderShipped;
 use App\Models\Appreciation;
+use App\Models\File;
+use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AppreciationExport;
 
 class AppreciationService
 {
+
+    private AccessCodeService $accessCodeService;
+
+    public function __construct( AccessCodeService $accessCodeService )
+    {
+        $this->accessCodeService = $accessCodeService;
+    }
+
     public function appreciations(){
         try {
-            $appreciations = Appreciation::all();
+            $appreciations = Appreciation::with('file')->get();
             return [ 'success' => true, 'appreciations' => $appreciations];
         } catch (\Throwable $th) {
             \Log::error($th->getMessage());
@@ -21,7 +31,9 @@ class AppreciationService
 
     public function getAppreciationByClient($request){
         try {
-            $appreciationsByClient = Appreciation::where('users_id', $request->user()->id)->get();
+            $appreciationsByClient = Appreciation::where('users_id', $request->user()->id)
+                ->with('file')
+                ->get();
             return [ 'success' => true, 'appreciations' => $appreciationsByClient ];
         } catch (\Throwable $th) {
             \Log::error($th->getMessage());
@@ -31,12 +43,23 @@ class AppreciationService
 
     public function createAppreciation($request){
         try {
-            // agregar logica si el usario existe o si se acutaliza o crea
+            if($request->data['newClient'] === true) {
+                $client = new User();
+                $client->name = $request->data['name'];
+                $client->rut = $request->data['rut'];
+                $client->user_types_id = 3;
+                $client->email = $request->data['email'];
+                $client->phone = $request->data['phone'];
+                $client->save();
+            } else {
+                $client = User::where('rut', $request->data['rut'])->first();
+            }
+            $this->accessCodeService->createAccessCode($client->id);
             $appreciation = new Appreciation();
-            $appreciation->users_id = 2;
-            $appreciation->type_assets_id = 1;
+            $appreciation->users_id = $client->id;
+            $appreciation->type_assets_id = $request->data['typeOfAsset'];
             $appreciation->access_code_id = 1;
-            $appreciation->commune_id = 124;
+            $appreciation->commune_id = $request->data['communeId'];
             $appreciation->address = $request->data['addressMap'];
             $appreciation->address_number = 123;
             $appreciation->rol = $request->data['rolBlock'].'-'.$request->data['rolPlotOfLand'];
@@ -44,8 +67,8 @@ class AppreciationService
             $appreciation->construction_area = $request->data['terrainConstruction'];
             $appreciation->bedrooms = $request->data['bedroom'];
             $appreciation->bathrooms = $request->data['bathroom'];
-            $appreciation->latitude = 45.55;
-            $appreciation->longitude = 78.33;
+            $appreciation->latitude = $request->data['latitude'];
+            $appreciation->longitude = $request->data['longitude'];
             $appreciation->status = true;
             $appreciation->value_uf_saved = 4564565;
             $appreciation->value_uf_reference = 3216549555;
@@ -53,19 +76,18 @@ class AppreciationService
             $appreciation->value_uf_report = 123546123;
             $appreciation->quality = 10;
             $appreciation->save();
-            $appreciationGet = [
-                'direccion' => $appreciation->address,
-                'area_terreno' => $appreciation->terrain_area,
-                'area_construction' => $appreciation->construction_area,
-                'habitaciones' => $appreciation->bedrooms,
-                'banos' => $appreciation->bathrooms,
-                'valor_uf' => $appreciation->value_uf_saved
-            ];
-            $excel = Excel::store(new AppreciationExport($appreciation), 'appreciation.xlsx');
-            Mail::to('mauricio.acuna@valuaciones.cl')->send(new OrderShipped($appreciation));
+            $path = $client->id.'/appreciation'.$appreciation->id.'.xlsx';
+            $excel = Excel::store(new AppreciationExport($appreciation), $path, 'files');
+            $file = new File;
+            $file->appreciation_id = $appreciation->id;
+            $file->users_id = $client->id;
+            $file->file_type_id = 1;
+            $file->path = $path;
+            $file->save();
+            Mail::to('mauricio.acuna@valuaciones.cl')->send(new OrderShipped($appreciation, $path));
             return [
                 'success' => true,
-                'appreciation' => 'La el sistema esta procesando la valoracion'
+                'message' => 'El sistema esta procesando la valoracion'
             ];
         } catch (\Throwable $th) {
             \Log::error($th->getMessage());

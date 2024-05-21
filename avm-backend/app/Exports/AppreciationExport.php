@@ -2,19 +2,26 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromCollection;
+use Illuminate\View\View;
+use Maatwebsite\Excel\Concerns\WithTitle;
+use Maatwebsite\Excel\Concerns\FromView;
 
-class AppreciationExport implements FromCollection
+class AppreciationExport implements WithTitle, FromView
 {
+
     public function __construct($appreciation){
         $this->appreciation = $appreciation;
     }
-    
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+
+    public function view(): View
     {
-        return $this->appreciation;
+        return view('mail.excel', [
+            'appreciation' => $this->appreciation,
+        ]);
+    }
+
+    public function title(): string
+    {
+        return 'Informe de Estimacion de Valor';
     }
 }

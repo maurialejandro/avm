@@ -11,30 +11,28 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Queue\SerializesModels;
-use App\Exports\AppreciationExport;
-use Symfony\Component\Mime\MimeTypes;
 
 class OrderShipped extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $appreciation;
     /**
      * Create a new message instance.
      */
-    public function __construct($appreciation)
+    public function __construct($appreciation, $path)
     {
         $this->appreciation = $appreciation;
+        $this->path = $path;
     }
 
-    public function build(): self 
+    public function build(): self
     {
         return $this
             ->subject('Informe AVM para revisar en excel')
             ->view('mail.valoration')
-            ->attach(public_path('storage/appreciation.xlsx'), [
+            ->attach('/home/mauri/Working/avm/avm-backend/storage/app/files/'.$this->path, [
                 'as' => 'appreciation.xlsx',
                 'mime' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        ]);
+            ]);
     }
 }

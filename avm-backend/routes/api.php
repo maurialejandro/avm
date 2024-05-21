@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AppreciationController;
 use App\Http\Controllers\CommuneController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,3 +41,7 @@ Route::post('search-client', [UserController::class, 'searchClient'])->middlewar
 
 // Commune
 Route::post('search-commune', [CommuneController::class, 'searchCommune'])->middleware('auth:sanctum');
+
+// Path file
+Route::get('file/{id}/{file}', [FileController::class, 'getFile']);
+Route::post('store-file', [FileController::class, 'storeFile'])->middleware('auth:sanctum');
