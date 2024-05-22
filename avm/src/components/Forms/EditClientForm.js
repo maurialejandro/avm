@@ -1,22 +1,33 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import "../../components/styles/FormStyles.css";
+import { updateClient } from '../../services/client';
 
 export function EditClientForm(props) {
+    const { userClient } = props;
     const { register, handleSubmit, formState: { errors }, } = useForm({
         defaultValues: {
-            rut: '',
-            email: '',
-            phone: ''
+            name: userClient.name,
+            rut: userClient.rut,
+            email: userClient.email,
+            phone: userClient.phone
         }
     })
 
     const onSubmit = async (data) => {
-        console.log(data);
+        const res = await updateClient(data, userClient.id);
+        console.log(res);
     }
 
     return(
         <form onSubmit={handleSubmit(onSubmit)} >
+            <input 
+                className='form-control'
+                placeholder='Nombre'
+                { ...register("name", { required: "Nombre es requerido" }) }
+                aira-invalid={errors.name ? true : false}
+            />
+            { errors.name && <p className='error-message-table' > { errors.name.message } </p> }
             <input
                 className="form-control"
                 placeholder="Rut"

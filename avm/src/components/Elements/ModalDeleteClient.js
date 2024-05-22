@@ -8,20 +8,25 @@ import {
     MDBModalBody,
     MDBModalFooter,
 } from 'mdb-react-ui-kit';
-import {EditClientForm} from "../Forms/EditClientForm";
+import { deleteClient } from '../../services/client';
 
 export function ModalDeleteClient(props) {
-    const { openDelete, setOpenDelete } = props;
+    const { openDelete, setOpenDelete, userClient } = props;
+    const handleDelete = async (id) => {
+        console.log(id)
+        const res = await deleteClient(id);
+        console.log(res);
+    }
     return (
         <>
             <MDBModal open={openDelete} onClose={() => setOpenDelete(!openDelete)} tabIndex='2'>
                 <MDBModalDialog>
                     <MDBModalContent>
                         <MDBModalHeader>
-                            <MDBModalTitle>Desea eliminar el cliente NAME</MDBModalTitle>
+                            <MDBModalTitle>Desea eliminar el cliente { userClient.name }</MDBModalTitle>
                         </MDBModalHeader>
                         <MDBModalBody>
-                            <button className="btn btn-primary" >
+                            <button className="btn btn-primary" onClick={() => { handleDelete(userClient.id) }} >
                                 Eiminar
                             </button>
                         </MDBModalBody>

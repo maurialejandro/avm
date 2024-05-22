@@ -203,9 +203,12 @@ export function TableClientAppreciation(){
                                         <button
                                             className="btn-icon"
                                         >
-                                            <a href={`${apiUrl}/file/${row.file[1].path}`} download>
-                                                <DownloadIcon />
-                                            </a>
+                                            { (row.file?.length > 1) && (
+                                                <a href={`${apiUrl}/file/${row.file[1].path}`} download>
+                                                    <DownloadIcon />
+                                                </a>
+                                            ) }
+                                            
                                         </button>
                                         </StyledTableCell>
                                     </StyledTableRow>

@@ -25,7 +25,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {useAuthContext} from "../../context/AuthContext";
 
 export function TableClients(props) {
-    const { open, setOpen, openDelete, setOpenDelete } = props;
+    const { open, setOpen, openDelete, setOpenDelete, userClient, setUserClient } = props;
     const [ rows, setRows ] = React.useState([]);
     const [ isLoading, setIsLoading ] = React.useState(true);
     const user = useAuthContext();
@@ -165,11 +165,12 @@ export function TableClients(props) {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-    const handleOpenCloseModal = () => {
+    const handleOpenCloseModal = (client) => {
+        setUserClient(client)
         setOpen(!open);
     }
-    const handleOpenCloseModalDelete = () => {
-        console.log('OPEN MODAL')
+    const handleOpenCloseModalDelete = (client) => {
+        setUserClient(client);
         setOpenDelete(!openDelete)
     }
     return(
@@ -206,14 +207,14 @@ export function TableClients(props) {
 
                                             <button
                                                 disabled={user.user.type === 'administrator_supervisor' ? true : false}
-                                                onClick={ () => { handleOpenCloseModal() } }
+                                                onClick={ () => { handleOpenCloseModal(row) } }
                                                 className="btn-icon"
                                             >
                                                 <EditIcon fontSize="medium"   />
                                             </button>
                                             <button
                                                 disabled={user.user.type === 'administrator_supervisor' ? true : false}
-                                                onClick={ () => { handleOpenCloseModalDelete() } }
+                                                onClick={ () => { handleOpenCloseModalDelete(row) } }
                                                 className="btn-icon"
                                             >
                                                 <DeleteIcon fontSize="medium" />

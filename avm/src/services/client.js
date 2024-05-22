@@ -45,3 +45,31 @@ export async function getTypeOfAssets(){
         return e;
     });
 }
+
+export async function updateClient(data, id){
+    let token = await getSanctumToken();
+    AxiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    return AxiosInstance.patch(`update-client/${id}`, 
+        JSON.stringify(data)
+    ).then((response) => {
+        return response.data;
+    }).catch((e) => {
+        if(e.response?.data.errors){
+            return { 'error': e.response.data.errors }
+        }
+        return e;
+    });
+}
+
+export async function deleteClient(id){
+    let token = await getSanctumToken();
+    AxiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    return AxiosInstance.delete(`delete-client/${id}`).then((response) => {
+        return response.data;
+    }).catch((e) => {
+        if(e.response?.data.errors){
+            return { 'error': e.response.data.errors }
+        }
+        return e;
+    })
+}

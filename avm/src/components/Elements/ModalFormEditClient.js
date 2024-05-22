@@ -12,7 +12,7 @@ import {
 import {EditClientForm} from "../Forms/EditClientForm";
 
 export function ModalFormEditClient(props) {
-    const { open, setOpen } = props;
+    const { open, setOpen, userClient, setUserClient } = props;
     return (
         <>
             <MDBModal open={open} onClose={() => setOpen(!open)} tabIndex='2'>
@@ -22,7 +22,10 @@ export function ModalFormEditClient(props) {
                             <MDBModalTitle>Editar Cliente</MDBModalTitle>
                         </MDBModalHeader>
                         <MDBModalBody>
-                            <EditClientForm />
+                            <EditClientForm
+                                userClient={userClient}
+                                setUserClient={setUserClient}
+                            />
                         </MDBModalBody>
                         <MDBModalFooter>
                             <button onClick={() => setOpen(!open)} className="btn btn-primary" >

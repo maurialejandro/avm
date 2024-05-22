@@ -10,6 +10,8 @@ import {ModalDeleteClient} from "../../../components/Elements/ModalDeleteClient"
 export function Clients(){
     const [ open, setOpen ] = React.useState(false);
     const [ openDelete, setOpenDelete ] = React.useState(false);
+    const [ userClient, setUserClient ] = React.useState({});
+
     return(
         <>
             <NavBar/>
@@ -21,9 +23,21 @@ export function Clients(){
                     </div>
                     <hr/>
                     <input className='input-search' placeholder='Buscar'/>
-                    <TableClients open={open} setOpen={setOpen} openDelete={openDelete} setOpenDelete={setOpenDelete} />
-                    <ModalFormEditClient open={open} setOpen={setOpen} />
-                    <ModalDeleteClient openDelete={openDelete} setOpenDelete={setOpenDelete} />
+                    <TableClients
+                        open={open} 
+                        setOpen={setOpen} 
+                        openDelete={openDelete} 
+                        setOpenDelete={setOpenDelete} 
+                        userClient={userClient}
+                        setUserClient={setUserClient}
+                    />
+                    <ModalFormEditClient 
+                        open={open} 
+                        setOpen={setOpen}
+                        userClient={userClient}
+                        setUserClient={setUserClient} 
+                    />
+                    <ModalDeleteClient userClient={userClient} openDelete={openDelete} setOpenDelete={setOpenDelete} />
                 </Container>
             <br/>
             <br/>
