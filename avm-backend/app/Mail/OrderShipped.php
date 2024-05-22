@@ -30,7 +30,7 @@ class OrderShipped extends Mailable
         return $this
             ->subject('Informe AVM para revisar en excel')
             ->view('mail.valoration')
-            ->attach('/home/mauri/Working/avm/avm-backend/storage/app/files/'.$this->path, [
+            ->attach('C:\Users\mauricio.acuna\Documents\Working\avm\avm-backend/storage/app/files/'.$this->path, [
                 'as' => 'appreciation.xlsx',
                 'mime' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             ]);
