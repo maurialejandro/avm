@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import { useForm } from 'react-hook-form';
 import '../../components/styles/FormStyles.css';
 import { Map } from "../Elements/Map";
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import Select from "react-select";
 import { AutoCompleteInputMap } from "../Elements/AutoCompleteInputMap";
 import { searchCommune } from "../../services/commune";
@@ -12,6 +12,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { searchClient } from "../../services/client";
 import {enqueueSnackbar} from "notistack";
 import {storeAppreciation} from "../../services/appreciation";
+import { useNavigate } from 'react-router-dom';
 
 export function CreateAppreciationForm() {
     const [ coordinates, setCoordinates ] = React.useState({});
@@ -21,7 +22,7 @@ export function CreateAppreciationForm() {
     const [ rutError, setRutError ] = React.useState('');
     const [ typeAssetError, setTypeAssetError ] = React.useState('');
     const [ addressError, setAddressError ] = React.useState('');
-    const [ typeAssets, setTypeAssets ] = React.useState(null);
+    const navigate = useNavigate();
     const options = [
         { value: 1, label: 'Casa' },
         { value: 2, label: 'Departamento' },
@@ -33,7 +34,7 @@ export function CreateAppreciationForm() {
                 await getCommuneBack(communeSearch);
             }
         })()
-    }, [communeSearch, ])
+    }, [communeSearch])
     const getCommuneBack = async (search) => {
         const res = await searchCommune(search.trim());
         if(res.success === true){
@@ -66,6 +67,7 @@ export function CreateAppreciationForm() {
         }
     })
     const onSubmit = async (data) => {
+        setIsLoading(true);
         const res = await storeAppreciation(data);
         if(res.success === true){
             enqueueSnackbar(res.message, {
@@ -77,6 +79,8 @@ export function CreateAppreciationForm() {
                 variant: "error"
             });
         }
+        navigate('/appreciations');
+        setIsLoading(false);
     }
     const handleEnterKey = async () => {
         setIsLoading(true)
@@ -146,6 +150,7 @@ export function CreateAppreciationForm() {
         setTypeAssetError('')
     }
     return(
+        <>
         <form onSubmit={handleSubmit(onSubmit)} onKeyDown={(e) => { checkKeyDown(e) }} >
             <Grid container  padding={3} borderRadius={5} borderColor="gray" backgroundColor="#f1f1f1" >
                 <Grid container>
@@ -324,11 +329,13 @@ export function CreateAppreciationForm() {
                         <Grid item xs={8} >
                             <button
                                 className="btn-table p-2"
-                                style={{ marginLeft: "100px", width: "500px"}}
+                                style={{ marginLeft: "100px", width: "500px", alignItems: 'center'}}
                                 onClick={(e) => {
                                     handleError()
                                 }}
                             >
+                           {isLoading &&
+                                <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" style={{ marginRight: "10px" }} ></span>}
                                 CREAR VALORACIÓN
                             </button>
                         </Grid>
@@ -336,5 +343,6 @@ export function CreateAppreciationForm() {
                 </Grid>
             </Grid>
         </form>
+        </>
     )
 }

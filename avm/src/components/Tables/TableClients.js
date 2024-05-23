@@ -25,9 +25,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {useAuthContext} from "../../context/AuthContext";
 
 export function TableClients(props) {
-    const { open, setOpen, openDelete, setOpenDelete, userClient, setUserClient } = props;
-    const [ rows, setRows ] = React.useState([]);
+    const { open, setOpen, openDelete, setOpenDelete, userClient, setUserClient, rows, setRows, refresh, setRefresh } = props;
     const [ isLoading, setIsLoading ] = React.useState(true);
+    
     const user = useAuthContext();
 
     useEffect(() => {
@@ -36,7 +36,7 @@ export function TableClients(props) {
                 await getClientsBack();
             }, 3000)
         })()
-    }, []);
+    }, [refresh]);
 
     const getClientsBack = async () => {
         setIsLoading(true)
