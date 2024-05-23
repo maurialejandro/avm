@@ -20,7 +20,6 @@ class UserService
     public function searchClient($rut){
         try {
             $client = User::where('rut', $rut)->get();
-            \Log::error($rut);
             return ['success' => true, 'client' => $client];
         } catch (\Throwable $th) {
             return ['success' => false, 'message' => 'Error al buscar cliente'];

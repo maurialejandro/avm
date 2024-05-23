@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('regions_id');
             $table->foreign('regions_id')->references('id')->on('regions')->onDelete('cascade')->onUpdate('cascade');
+            $table->integer('code_commune');
             $table->string('name');
         });
     }

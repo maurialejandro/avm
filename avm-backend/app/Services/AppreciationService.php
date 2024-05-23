@@ -8,15 +8,29 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\AppreciationExport;
+use App\Services\AccessCodeService;
+use App\Services\ApiService;
+use App\Services\CalculateService;
+use App\Services\MailService;
 
 class AppreciationService
 {
-
     private AccessCodeService $accessCodeService;
+    private ApiService $apiService;
+    private CalculateService $calculateService;
+    private MailService $mailService;
 
-    public function __construct( AccessCodeService $accessCodeService )
+    public function __construct(
+        AccessCodeService $accessCodeService, 
+        ApiService $apiService,  
+        CalculateService $calculateService,
+        MailService $mailService
+    )
     {
         $this->accessCodeService = $accessCodeService;
+        $this->apiService = $apiService;
+        $this->calculateService = $calculateService;
+        $this->mailService = $mailService;
     }
 
     public function appreciations(){
@@ -70,21 +84,24 @@ class AppreciationService
             $appreciation->latitude = $request->data['latitude'];
             $appreciation->longitude = $request->data['longitude'];
             $appreciation->status = true;
-            $appreciation->value_uf_saved = 4564565;
-            $appreciation->value_uf_reference = 3216549555;
-            $appreciation->value_uf_valoranet = 123456789;
-            $appreciation->value_uf_report = 123546123;
+            $uf = $this->apiService->getUf(); // get uf
+            $value_uf_valoranet = $this->calculateService->calculateValueValoranet($request);
+            $value_uf_report = $this->calculateService->calculateValueWitnesses($request);
+            $appreciation->value_uf_saved = $uf;
+            $appreciation->value_uf_reference = $uf;
+            $appreciation->value_uf_valoranet =  $value_uf_valoranet;
+            $appreciation->value_uf_report =  $value_uf_report;
             $appreciation->quality = 10;
             $appreciation->save();
             $path = $client->id.'/appreciation'.$appreciation->id.'.xlsx';
-            $excel = Excel::store(new AppreciationExport($appreciation), $path, 'files');
+            //$excel = Excel::store(new AppreciationExport($appreciation), $path, 'files');
+            $this->mailService->sendExcelCoordinator($appreciation->id);
             $file = new File;
             $file->appreciation_id = $appreciation->id;
             $file->users_id = $client->id;
             $file->file_type_id = 1;
             $file->path = $path;
             $file->save();
-            Mail::to('mauricio.acuna@valuaciones.cl')->send(new OrderShipped($appreciation, $path));
             return [
                 'success' => true,
                 'message' => 'El sistema esta procesando la valoracion'

@@ -15,4 +15,14 @@ class Appreciation extends Model
     {
         return $this->hasMany(File::class);
     }
+
+    public function client(): HasMany
+    {
+        return $this->hasMany(User::class, 'id', 'users_id');
+    }
+
+    public function commune(): HasMany
+    {
+        return $this->hasMany(Commune::class, 'id', 'commune_id');
+    }
 }

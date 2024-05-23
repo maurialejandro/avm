@@ -11,7 +11,6 @@ class CommuneService
             $commune = Commune::where('name', $search)
                 ->with('region')
                 ->first();
-            \Log::error($commune);
             return [
                 'success' => true,
                 'data' => $commune
