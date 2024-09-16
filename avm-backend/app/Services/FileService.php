@@ -8,7 +8,6 @@ class FileService
     public function storeFile($request){
         try {
             $appreciation = Appreciation::where('id', $request->id)->first();
-
             $path = $request->file('file')->store($appreciation->users_id, 'files');
             $file = new File;
             $file->users_id = $appreciation->users_id;
@@ -28,4 +27,15 @@ class FileService
             ];
         }
     }
+    // bye try catch exanmple
+
+    //async func getData() {
+    //    const [error, response] ?= await fetch(FETCHURL)
+    //    if(error) return handleError(error)
+    //}
+
+    //func hahandleError(error){
+    //    return error
+    //}
+
 }

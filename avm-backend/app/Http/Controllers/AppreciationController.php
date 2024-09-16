@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\GenerateAppreciation;
 use App\Services\AppreciationService;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,10 @@ class AppreciationController extends Controller
     }
 
     public function createAppreciation(Request $request){
-        $res = $this->appreciationService->createAppreciation($request);
-        return response()->json($res);
+        dispatch(new GenerateAppreciation($request->data))->afterResponse();
+        return response()->json([
+            'success' => true,
+            'message' => 'El sistema esta procesando la valoracion'
+        ]);
     }
 }

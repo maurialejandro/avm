@@ -1,0 +1,4 @@
+(1, 1, 'Test Coordinador', 'test.coordinator@valuaciones.cl', datetime.datetime(2024, 5, 12, 0, 56, 8), None, 958977661, '$2y$12$7RwQxkQBYe1w5uUmGxnfe.//ijbnNpGgCWJY.rGw2KAVmcfSP4laK', None, None, None, None)
+(2, 3, 'Test Client', 'test.client@valuaciones.cl', datetime.datetime(2024, 5, 12, 0, 56, 8), '77164602-6', 958977661, None, None, None, None, None)
+(3, 2, 'Test Supervisor', 'test.supervisor@valuaciones.cl', datetime.datetime(2024, 5, 12, 0, 56, 8), None, 958977661, '$2y$12$jqSBPZpfZvgiYgnGg.0gYe1Sk60dB4BICBsYKqLHxv/XZxOIIvtFO', None, None, None, None)
+(4, 3, 'Mauricio', 'mauri.alejandro2165@gmail.com', None, '19350720-4', 689887771, None, None, None, datetime.datetime(2024, 5, 20, 14, 16, 54), datetime.datetime(2024, 5, 20, 14, 16, 54))
