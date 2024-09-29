@@ -169,8 +169,12 @@ export function TableClients(props) {
         setUserClient(client)
         setOpen(!open);
     }
+<<<<<<< HEAD
     const handleOpenCloseModalDelete = (client) => {
         setUserClient(client);
+=======
+    const handleOpenCloseModalDelete = () => {
+>>>>>>> 4453311 (search bar)
         setOpenDelete(!openDelete)
     }
     return(
